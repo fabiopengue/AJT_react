@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Button, Form, FormGroup, Label, Input, FormFeedback} from 'reactstrap';
+import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
 import {Link} from 'react-router-dom';
 import Validator from 'validator';
 import InlineError from "../messages/InlineError";
@@ -8,10 +8,9 @@ import InlineError from "../messages/InlineError";
 class SigninForm extends React.Component {
   state = {
     data: {
-      email: "",
-      password: ""
+      email: '',
+      password: ''
     },
-    loading: false,
     errors: {}
   };
 
@@ -24,12 +23,11 @@ class SigninForm extends React.Component {
     const errors = this.validate(this.state.data);
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
-      this.setState({ loading: true });
-      this.props.submit(this.state.data)
-    }
+      this.props.submit(this.state.data);
+    };
   };
 
-  validate = data => {
+  validate = (data) => {
     const errors = {};
     if (!Validator.isEmail(data.email)) errors.email = "Invalid email";
     if (!data.password) errors.password = "Can't be blank";
@@ -37,17 +35,11 @@ class SigninForm extends React.Component {
   };
 
   render(){
-    const { data, errors, loading } = this.state;
+    const { data, errors } = this.state;
 
     return(
-      <Form inline id='signinform' onSubmit={this.onSubmit} loading={loading}>
-        {errors.global && (
-            <FormFeedback negative>
-              <FormFeedback.Header>Something went wrong</FormFeedback.Header>
-              <p>{errors.global}</p>
-            </FormFeedback>
-          )}
-        <FormGroup className="mb-2 mr-sm-2 mb-sm-0" id='emailblock' error={!!errors.email}>
+      <Form inline id='signinform' onSubmit={this.onSubmit}>
+        <FormGroup className="mb-2 mr-sm-2 mb-sm-0" id='emailblock'>
           <Label for="exampleEmail" className="mr-sm-2" id='label'>Email</Label>
           <Input
             type="email"
@@ -58,7 +50,7 @@ class SigninForm extends React.Component {
             onChange={this.onChange} />
           {errors.email && <InlineError text={errors.email} />}
         </FormGroup>
-        <FormGroup className="mb-2 mr-sm-2 mb-sm-0" id='passwordblock' error={!!errors.password}>
+        <FormGroup className="mb-2 mr-sm-2 mb-sm-0" id='passwordblock'>
           <Label for="examplePassword" className="mr-sm-2" id='label'>Password</Label>
           <Input
             type="password"

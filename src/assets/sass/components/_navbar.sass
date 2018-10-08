@@ -2,6 +2,10 @@
   background: $color
   background: rgba($color, $opacity)
 
+$WT_blue: #26B2DB
+$AJT_green: #4DC32B
+$AJT_darkblue: #002C4E
+
 #hero
   width: 100%
   height: 97vh
@@ -20,15 +24,11 @@
   margin-bottom: 0
   padding: 0 20px
 
-#signindiv
-  align-content: right
-
 #row
   @include bg-opacity(#000,0.4)
   width: 100%
   height: 80px
   padding: 0
-  margin: 0
   align-items: center
   border-radius: 5px
 
@@ -37,5 +37,5 @@
   justify-content: flex-end
 
 #signinbtn
-  background: lightgreen
-  color: darkgreen
+  background: $AJT_green
+  color: $AJT_darkblue
