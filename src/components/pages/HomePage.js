@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Transition } from 'react-transition-group';
+import {connect} from 'react-redux';
 import {
   Button,
   Container,
@@ -13,6 +13,7 @@ import {
   NavLink,
   Row} from 'reactstrap';
 import SigninForm from '../forms/SigninForm';
+import {login} from '../actions/auth';
 
 class HomePage extends React.Component {
   constructor(props) {
@@ -34,9 +35,9 @@ class HomePage extends React.Component {
       collapse: !this.state.collapse });
   }
 
-  submit = data => {
-    console.log(data);
-  };
+  submit = data =>
+    this.props.login(data).then(() => this.props.history.push('/dashboard'));
+
 
   render() {
     return (
@@ -96,18 +97,11 @@ class HomePage extends React.Component {
   }
 }
 
-Collapse.propTypes = {
-  ...Transition.propTypes, // see note below
-  isOpen: PropTypes.bool,
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
-  ]),
-  tag: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  className: PropTypes.node,
-  navbar: PropTypes.bool,
-  cssModule: PropTypes.object,
-  innerRef: PropTypes.object
-};
+HomePage.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired,
+  login: PropTypes.func.isRequired
+}
 
-export default HomePage;
+export default connect(null, {login})(HomePage);

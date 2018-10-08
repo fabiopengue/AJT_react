@@ -19,13 +19,16 @@ class SigninForm extends React.Component {
       data: { ...this.state.data, [e.target.name]: e.target.value }
     });
 
-  onSubmit = () => {
+  onSubmit = (e) => {
+    e.preventDefault();
     const errors = this.validate(this.state.data);
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
-      this.props.submit(this.state.data);
+      this.props
+        .submit(this.state.data)
+        .catch(err => this.setState({errors: err.response.data.errors}));
     };
-  };
+  }
 
   validate = (data) => {
     const errors = {};
@@ -61,6 +64,8 @@ class SigninForm extends React.Component {
             onChange={this.onChange}/>
           {errors.password && <InlineError text={errors.password} />}
         </FormGroup>
+        { errors.global && <InlineError text={errors.global} />
+          }
         <div>
           <Button id='submitbutton'>Submit</Button>
         </div>
@@ -68,7 +73,9 @@ class SigninForm extends React.Component {
           <p>Not a member yet?</p>
           <Link to='/signup'>Sign Up</Link>
         </div>
+
       </Form>
+
 
     );
   }
