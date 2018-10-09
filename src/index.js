@@ -4,7 +4,7 @@ import './assets/css/bootstrap.min.css';
 import './assets/css/main.min.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter} from 'react-router-dom';
+import { BrowserRouter, Route} from 'react-router-dom';
 import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
@@ -22,10 +22,14 @@ if (localStorage.AJTJWT) {
   store.dispatch(userLoggedIn(user));
 }
 
-ReactDOM.render(<BrowserRouter>
-  <Provider store={store}><App /></Provider>
-</BrowserRouter>,
-document.getElementById('root'));
+ReactDOM.render(
+  <BrowserRouter>
+    <Provider store={store}>
+      <Route component={App} />
+    </Provider>
+  </BrowserRouter>,
+  document.getElementById('root')
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

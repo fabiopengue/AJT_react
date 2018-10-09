@@ -13,7 +13,7 @@ import {
   NavLink,
   Row} from 'reactstrap';
 import SigninForm from '../forms/SigninForm';
-import {login} from '../actions/auth';
+import {login} from '../../actions/auth';
 
 class HomePage extends React.Component {
   constructor(props) {
