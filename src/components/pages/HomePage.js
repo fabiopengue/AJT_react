@@ -6,14 +6,21 @@ import {
   Container,
   Col,
   Collapse,
+  ListGroup,
+  ListGroupItem,
+  Link,
   Navbar,
   NavbarBrand,
   Nav,
   NavItem,
   NavLink,
   Row} from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import SigninForm from '../forms/SigninForm';
 import {login} from '../../actions/auth';
+import logo from '../../stock/img/logo-ajt.svg';
+import {faFacebook, faTwitter, faLinkedin, faInstagram} from '@fortawesome/fontawesome-free-brands';
+
 
 class HomePage extends React.Component {
   constructor(props) {
@@ -45,7 +52,7 @@ class HomePage extends React.Component {
         <Container fluid id='hero'>
           <Navbar color="dark" dark expand="md" id='navBar'>
             <NavbarBrand href="#" id='logo'>
-              <span> AVERAGEJOETRADER. </span>
+              <span> <img src={logo} width='80px' height='80px' alt='' /> </span>
             </NavbarBrand>
             <Nav className="ml-auto" navbar>
               <NavItem active>
@@ -77,20 +84,29 @@ class HomePage extends React.Component {
               </Col>
             </Row>
           </Collapse>
-          <div id='heroSpace'>
-            <h1 id='payoff'>
-              <div>
-                <span> Building </span><span id='bluetext'>Dreams </span>
-              </div>
-              <div>
-                <span> One </span><span id='bluetext'>Trade </span><span>At A Time </span>
-              </div>
-            </h1>
-            <p id='heroContent'>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using, making it look like readable English.</p>
-            <Button bssize="large" id='memberButton'>
-              Become a member
-            </Button>
-          </div>
+          <Row id='heroSpace'>
+            <Col id='heroContent'>
+              <h1 id='payoff'>
+                <div>
+                  <span> Building </span><span id='bluetext'>Dreams </span>
+                </div>
+                <div>
+                  <span> One </span><span id='bluetext'>Trade </span><span>At A Time </span>
+                </div>
+              </h1>
+              <p id='heroBodyText'>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using, making it look like readable English.</p>
+              <Button bssize="large" id='memberButton'>
+                Become a member
+              </Button>
+            </Col>
+            <Col sm='auto' id='socialIcons'>
+              <FontAwesomeIcon className ='font-awesome' icon={faFacebook} id='fbicon' />
+              <FontAwesomeIcon className ='font-awesome' icon={faTwitter} />
+              <FontAwesomeIcon className ='font-awesome' icon={faLinkedin} />
+              <FontAwesomeIcon className ='font-awesome' icon={faInstagram} />
+
+            </Col>
+          </Row>
         </Container>
       </div>
     );

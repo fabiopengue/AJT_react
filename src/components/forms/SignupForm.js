@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Container, Col, Form,
   FormGroup, Label, Input,
-  Button, FormFeedback,} from 'reactstrap';
-import InlineError from "../messages/InlineError";
+  Button, FormFeedback, Modal, ModalBody, ModalFooter} from 'reactstrap';
+import warning from '../../stock/icons/warning.svg';
+import _ from 'lodash';
 
 class SignupForm extends React.Component {
   constructor(props) {
@@ -16,44 +17,45 @@ class SignupForm extends React.Component {
           },
           isDisabled: true,
           errors: {},
+          modal: false,
         validate: {
           emailState: '',
           passwordState: '',
           confirmPasswordState: ''
         },
       }
+      this.initalState = _.cloneDeep(this.state);
     }
+
 
   validateEmail = data => {
     const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const { validate } = this.state
+    const { validate } = this.state;
       if (emailRex.test(data.target.value)) {
         validate.emailState = 'has-success'
       } else {
         validate.emailState = 'has-danger'
       }
-      this.setState({ validate })
     }
 
   validatePassword= data => {
-    const {validate} = this.state
-      if (data.target.value.length >= 6) {
+    const passwordRex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d$@$!%* #=+?&]{6,}$/;
+    const {validate} = this.state;
+      if (passwordRex.test(data.target.value)) {
         validate.passwordState = 'has-success'
       } else {
         validate.passwordState = 'has-danger'
       }
-      this.setState({ validate })
   }
 
   validateConfirmPassword = data => {
     const {validate} = this.state;
-    if (data.target.value !== this.state.data.password) {
-      validate.confirmPasswordState = 'has-danger';
-    } else {
-      validate.confirmPasswordState = 'has-success';
-      this.setState({isDisabled: false});
-    }
-    this.setState({ validate });
+      if (data.target.value !== this.state.data.password) {
+        validate.confirmPasswordState = 'has-danger';
+      } else {
+        validate.confirmPasswordState = 'has-success';
+        this.setState({isDisabled: false});
+      }
   }
 
   handleChange = e => {
@@ -63,8 +65,20 @@ class SignupForm extends React.Component {
     });
   }
 
+
+  toggle = () => {
+    this.setState({
+      modal: !this.state.modal
+    });
+    this.setState({isDisabled: true});
+    this.setState(this.initalState);
+  }
+
   onSubmit = e => {
     e.preventDefault();
+    this.setState({
+      modal: !this.state.modal
+    });
     this.props
       .submit(this.state.data)
       .catch(err =>
@@ -85,12 +99,12 @@ class SignupForm extends React.Component {
 
 
   render() {
-    const { data, errors, isDisabled } = this.state;
+    const { data, errors, isDisabled, modal } = this.state;
 
     return (
       <Container className="SignupForm">
         <h2>Sign In</h2>
-        <Form className="form" onSubmit={ (e) => this.onSubmit(e) }>
+        <Form className="form" onSubmit={ (e) => this.onSubmit(e)} ref='form'>
           <Col>
             <FormGroup>
               <Label>Username</Label>
@@ -107,7 +121,14 @@ class SignupForm extends React.Component {
                             this.handleChange(e)
                           } }
               />
-              {errors.email && <InlineError text={errors.email} />}
+              {errors.email && <Modal isOpen={modal}>
+          <ModalBody align-text='center'>
+              <img src={warning} alt='' width='70px' height='70px'/> {errors.email}
+            <ModalFooter>
+              <Button color="primary" onClick={this.toggle}>Close</Button>{' '}
+            </ModalFooter>
+          </ModalBody>
+        </Modal>}
               <FormFeedback valid>
                 Valid Email.
               </FormFeedback>
